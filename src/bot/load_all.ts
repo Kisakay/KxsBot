@@ -1,10 +1,12 @@
 import { bot } from ".";
+import { help } from "../commands/help";
 
 import { new_message } from "../events/on_message";
 import { ready } from "../events/on_ready";
 
 export function load_all() {
     load_events()
+    load_commands()
 }
 
 function load_events() {
@@ -21,5 +23,16 @@ function load_events() {
             bot.on(event.name, event.function.bind(null, bot));
             console.log("[Event] " + event.name);
         }
+    }
+}
+
+function load_commands() {
+    let _ = Object.values([
+        help
+    ])
+
+    for (let command of _) {
+        bot.commands.set(command.name, command)
+        console.log("[Command] " + command.name);
     }
 }

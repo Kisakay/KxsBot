@@ -1,8 +1,10 @@
-import { Client } from "discord.js";
+import { Client, Collection } from "discord.js";
 import { SteganoDB } from "stegano.db";
-import config from "../../config.json";
+import cfg from "../../config.json";
 import { Active_Intents } from "./funcs";
 import { load_all } from "./load_all";
+
+export const config = cfg;
 
 export const bot = new Client({
     intents: [32767],
@@ -13,6 +15,8 @@ export const bot = new Client({
         parse: []
     }
 })
+
+bot.commands = new Collection();
 
 load_all()
 
@@ -33,3 +37,5 @@ bot.login(config.DISCORD_TOKEN)
         console.log(error)
         process.exit();
     })
+
+process.on("SIGINT", async () => bot.destroy())

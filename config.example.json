@@ -1,6 +1,6 @@
 {
     "DISCORD_TOKEN": "",
-    "DEFAULT_BOT_TOKEN": "",
+    "DEFAULT_BOT_PREFIX": "",
     "KXS_NETWORK_URL": "",
     "OWNERS": []
 }
