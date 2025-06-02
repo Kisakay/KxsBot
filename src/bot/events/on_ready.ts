@@ -1,5 +1,5 @@
-import type { event_type } from "../../types/event_type";
-import pkg from "../../package.json";
+import type { event_type } from "../../../types/event_type";
+import pkg from "../../../package.json";
 import { ActivityType } from "discord.js";
 
 export const ready: event_type = {

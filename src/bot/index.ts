@@ -1,10 +1,7 @@
 import { Client, Collection } from "discord.js";
-import { SteganoDB } from "stegano.db";
-import cfg from "../../config.json";
 import { Active_Intents } from "./funcs";
 import { load_all } from "./load_all";
-
-export const config = cfg;
+import { config } from "../shared";
 
 export const bot = new Client({
     intents: [
@@ -23,11 +20,7 @@ bot.commands = new Collection();
 
 load_all()
 
-export const db = new SteganoDB({
-    driver: "json",
-    filePath: process.cwd() + "/database.json",
-    currentTable: "bot"
-})
+
 
 bot.login(config.DISCORD_TOKEN)
     .catch((err) => {

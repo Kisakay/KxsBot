@@ -1,5 +1,5 @@
 import { EmbedBuilder, Message } from "discord.js";
-import type { command_type } from "../../types/command_type";
+import type { command_type } from "../../../types/command_type";
 
 export const help: command_type = {
     name: "help",

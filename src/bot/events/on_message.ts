@@ -1,6 +1,6 @@
 import { ChannelType, Message, PermissionFlagsBits } from "discord.js";
-import type { event_type } from "../../types/event_type";
-import { config } from "../bot";
+import type { event_type } from "../../../types/event_type";
+import { config } from "../../shared";
 
 export const new_message: event_type = {
     name: "messageCreate",

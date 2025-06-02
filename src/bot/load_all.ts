@@ -1,8 +1,8 @@
 import { bot } from ".";
-import { help } from "../commands/help";
+import { help } from "./commands/help";
 
-import { new_message } from "../events/on_message";
-import { ready } from "../events/on_ready";
+import { new_message } from "./events/on_message";
+import { ready } from "./events/on_ready";
 
 export function load_all() {
     load_events()
