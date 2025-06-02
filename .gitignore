@@ -132,3 +132,4 @@ dist
 
 bun.lock
 config.json
+database.json
