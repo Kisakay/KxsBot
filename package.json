@@ -1,0 +1,17 @@
+{
+  "name": "kxsbot",
+  "version": "0.0.0",
+  "module": "./src/bot/index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "discord.js": "^14.19.3",
+    "stegano.db": "^4.3.8"
+  }
+}
