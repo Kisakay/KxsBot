@@ -10,3 +10,7 @@ kxs_network.on("open", () => {
         console.log(to_string);
     })
 })
+
+kxs_network.on("error", (error) => {
+    console.log(error)
+})

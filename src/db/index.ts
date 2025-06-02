@@ -5,3 +5,7 @@ export const db = new SteganoDB({
     filePath: process.cwd() + "/database.json",
     currentTable: "bot"
 })
+
+console.log(
+    `Database is running`
+)
