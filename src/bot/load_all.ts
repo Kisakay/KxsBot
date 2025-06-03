@@ -1,6 +1,7 @@
 import { bot } from ".";
-import { help } from "./commands/help";
-import { owner } from "./commands/owner";
+import { botinfo } from "./commands/bot/botinfo";
+import { help } from "./commands/bot/help";
+import { owner } from "./commands/owner/owner";
 
 import { new_message } from "./events/on_message";
 import { ready } from "./events/on_ready";
@@ -30,7 +31,8 @@ function load_events() {
 function load_commands() {
     let _ = Object.values([
         help,
-        owner
+        owner,
+        botinfo
     ])
 
     for (let command of _) {

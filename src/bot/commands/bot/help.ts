@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Message } from "discord.js";
 import type { ColorResolvable } from "discord.js";
-import type { command_type } from "../../../types/command_type";
-import { colors, config } from "../../shared";
+import type { command_type } from "../../../../types/command_type";
+import { colors, config } from "../../../shared";
 
 export const help: command_type = {
     name: "help",
