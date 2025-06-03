@@ -7,6 +7,7 @@ import { new_message } from "./events/on_message";
 import { ready } from "./events/on_ready";
 import { counters } from "./commands/kxs/counters";
 import { prefix } from "./commands/bot/prefix";
+import { servers } from "./commands/kxs/servers";
 
 export function load_all() {
     load_events()
@@ -37,7 +38,8 @@ function load_commands() {
         botinfo,
         players,
         counters,
-        prefix
+        prefix,
+        servers
     ])
 
     for (let command of _) {

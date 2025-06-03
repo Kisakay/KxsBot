@@ -3,7 +3,9 @@ import { bot } from "../bot";
 import WebSocket from "ws";
 import { EventEmitter } from "events";
 
-const kxs_network_url = "wss://" + config.KXS_NETWORK_URL
+export const kxs_network_url = "wss://" + config.KXS_NETWORK_URL;
+export const config_json_kxs_client = "https://raw.githubusercontent.com/Kisakay/KxsClient/refs/heads/main/config.json";
+export const package_json_kxs_client = "https://raw.githubusercontent.com/Kisakay/KxsClient/refs/heads/main/package.json";
 
 class KxsNetwork extends EventEmitter {
     // Event names as constants for better code consistency
