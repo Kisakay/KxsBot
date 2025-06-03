@@ -6,5 +6,5 @@ interface command_type {
 
     category: string;
 
-    async function(client: Client, x: Message);
+    async function(client: Client, x: Message, args?: string[]);
 }

@@ -16,6 +16,6 @@ export const new_message: event_type = {
 
         if (!cmd) return;
 
-        cmd.function(client, x);
+        cmd.function(client, x, args);
     },
 }

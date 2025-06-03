@@ -1,8 +1,9 @@
 import type { event_type } from "../../../types/event_type";
 import pkg from "../../../package.json";
-import { ActivityType } from "discord.js";
+import { ActivityType, ChannelType, VoiceChannel } from "discord.js";
 import { config } from "../../shared";
 import { kxsNetwork } from "../../kxs";
+import { intervals } from "../..";
 
 export const ready: event_type = {
     name: "ready",
@@ -43,6 +44,25 @@ export const ready: event_type = {
             }
         }
 
-        await owners();
+        async function counters() {
+            let guilds = client.database.table("guilds");
+            let guilds_in_db = await guilds.all();
+
+            guilds_in_db
+                .filter(v => Number(v.id))
+                .map(x => {
+                    let online_counter = x.value?.online_counter as { channel: string, name: string } | undefined;
+                    if (online_counter) {
+                        let channel = client.channels.cache.get(online_counter.channel);
+                        if (!channel || channel.type !== ChannelType.GuildVoice) return;
+
+                        let voice_channel = channel as VoiceChannel;
+                        voice_channel.setName(`${online_counter.name} (${kxsNetwork.getOnlineCount()})`);
+                    }
+                })
+        }
+
+        await owners(); await counters();
+        intervals.push(setInterval(counters, 15 * 60 * 1000));
     },
 }

@@ -23,7 +23,7 @@ export const help: command_type = {
         });
 
         // Create the main embed
-        const mainEmbed = new EmbedBuilder()
+        const main_embed = new EmbedBuilder()
             .setColor(colors.primary as ColorResolvable)
             .setAuthor({
                 name: `${client.user?.username || 'Bot'} | Help and Commands`,
@@ -41,9 +41,9 @@ export const help: command_type = {
         const row = new ActionRowBuilder<ButtonBuilder>();
 
         // Limit to 5 buttons maximum (Discord limit)
-        const categoryNames = Array.from(categories.keys()).slice(0, 5);
+        const category_names = Array.from(categories.keys()).slice(0, 5);
 
-        categoryNames.forEach((category, index) => {
+        category_names.forEach((category, index) => {
             row.addComponents(
                 new ButtonBuilder()
                     .setCustomId(`help_category_${index}`)
@@ -53,13 +53,13 @@ export const help: command_type = {
         });
 
         // Send the initial message
-        const helpMessage = await message.reply({
-            embeds: [mainEmbed],
-            components: categoryNames.length > 0 ? [row] : []
+        const help_message = await message.reply({
+            embeds: [main_embed],
+            components: category_names.length > 0 ? [row] : []
         });
 
         // Create collector for button interactions
-        const collector = helpMessage.createMessageComponentCollector({
+        const collector = help_message.createMessageComponentCollector({
             time: 60000 // Collector expires after 60 seconds
         });
 
@@ -74,21 +74,21 @@ export const help: command_type = {
             }
 
             const parts = interaction.customId!.split('_');
-            const categoryIndex = parseInt(String(parts.length > 2 ? parts[2] : '0'));
-            const categoryName = categoryNames[categoryIndex] || "General";
-            const commands = categories.get(categoryName) || [];
+            const category_index = parseInt(String(parts.length > 2 ? parts[2] : '0'));
+            const category_name = category_names[category_index] || "General";
+            const commands = categories.get(category_name) || [];
 
             // Create category embed
             const categoryEmbed = new EmbedBuilder()
                 .setColor(colors.primary as ColorResolvable)
                 .setAuthor({
-                    name: `${client.user?.username || 'Bot'} | Category: ${categoryName}`,
+                    name: `${client.user?.username || 'Bot'} | Category: ${category_name}`,
                     iconURL: client.user?.displayAvatarURL?.() || ''
                 })
                 .setThumbnail(client.user?.displayAvatarURL() || null)
-                .setDescription(`Here are the available commands in the **${categoryName}** category:`)
+                .setDescription(`Here are the available commands in the **${category_name}** category:`)
                 .setFooter({
-                    text: `Requested by ${message.author.tag} • Page ${categoryIndex + 1}/${categoryNames.length}`,
+                    text: `Requested by ${message.author.tag} • Page ${category_index + 1}/${category_names.length}`,
                     iconURL: message.author.displayAvatarURL() || ''
                 })
                 .setTimestamp();
@@ -117,9 +117,9 @@ export const help: command_type = {
                 );
 
             // Add category buttons
-            categoryNames.forEach((cat, idx) => {
+            category_names.forEach((cat, idx) => {
                 (row.components[idx] as ButtonBuilder).setStyle(
-                    idx === categoryIndex ? ButtonStyle.Success : ButtonStyle.Primary
+                    idx === category_index ? ButtonStyle.Success : ButtonStyle.Primary
                 );
             });
 
@@ -141,12 +141,12 @@ export const help: command_type = {
             }
 
             // Reset button styles
-            categoryNames.forEach((_, idx) => {
+            category_names.forEach((_, idx) => {
                 (row.components[idx] as ButtonBuilder).setStyle(ButtonStyle.Primary);
             });
 
             await interaction.update({
-                embeds: [mainEmbed],
+                embeds: [main_embed],
                 components: [row]
             });
         });
@@ -156,7 +156,7 @@ export const help: command_type = {
             // Disable all buttons
             row.components.forEach(button => (button as ButtonBuilder).setDisabled(true));
 
-            helpMessage.edit({
+            help_message.edit({
                 components: []
             }).catch(() => { });
         });

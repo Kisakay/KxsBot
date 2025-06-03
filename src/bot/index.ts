@@ -3,7 +3,6 @@ import { Active_Intents } from "./funcs";
 import { load_all } from "./load_all";
 import { config } from "../shared";
 import { db } from "../db";
-import { kxsNetwork } from "../kxs";
 
 export const bot = new Client({
     intents: [
@@ -45,8 +44,3 @@ bot.login(config.DISCORD_TOKEN)
         console.log(error)
         process.exit();
     })
-
-process.on("SIGINT", async () => {
-    bot.destroy()
-    kxsNetwork.disconnect(true)
-})

@@ -5,6 +5,7 @@ import { owner } from "./commands/owner/owner";
 import { players } from "./commands/kxs/players";
 import { new_message } from "./events/on_message";
 import { ready } from "./events/on_ready";
+import { counters } from "./commands/kxs/counters";
 
 export function load_all() {
     load_events()
@@ -33,7 +34,8 @@ function load_commands() {
         help,
         owner,
         botinfo,
-        players
+        players,
+        counters
     ])
 
     for (let command of _) {
