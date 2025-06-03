@@ -4,5 +4,7 @@ interface command_type {
     name: string;
     description: string;
 
+    category: string;
+
     async function(client: Client, x: Message);
 }

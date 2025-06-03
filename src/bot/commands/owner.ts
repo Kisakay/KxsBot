@@ -4,6 +4,7 @@ import type { command_type } from "../../../types/command_type";
 export const owner: command_type = {
     name: "owner",
     description: "Show all bot owner(s)",
+    category: "🌟 Owner",
     async function(client, x: Message) {
         if (!client.owners.includes(x.author.id)) {
             return x.react("❌")

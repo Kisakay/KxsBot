@@ -20,7 +20,7 @@ export const ready: event_type = {
 
         client.user?.setActivity({
             name: "kxs.rip",
-            state: "test",
+            state: "The best survev.io client",
             type: ActivityType.Streaming,
             url: "https://twitch.tv/anaissaraiva"
         });
