@@ -1,7 +1,3 @@
-counter for online player
 search for compatible server
 suggest a server
-join the support discord server
 change the prefix for each guild
-add a command to get the bot's latency
-add a command to get the bot's uptime
