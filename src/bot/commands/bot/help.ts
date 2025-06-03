@@ -93,14 +93,15 @@ export const help: command_type = {
                 })
                 .setTimestamp();
 
+            const prefix = await client.prefix(message.guild?.id);
             // Add commands to the embed
             commands.forEach(cmd => {
-                const usage = (cmd as any).usage ? `\n**Usage:** ${(cmd as any).usage}` : '';
+                const usage = (cmd as any).usage ? `\n**Usage:** ${prefix}${(cmd as any).usage}` : '';
                 const aliases = (cmd as any).aliases ? `\n**Aliases:** ${(cmd as any).aliases.join(', ')}` : '';
                 const cooldown = (cmd as any).cooldown ? `\n**Cooldown:** ${(cmd as any).cooldown} seconds` : '';
 
                 categoryEmbed.addFields({
-                    name: `\`${config.DEFAULT_BOT_PREFIX}${cmd.name}\``,
+                    name: `\`${prefix}${cmd.name}\``,
                     value: `${cmd.description}${usage}${aliases}${cooldown}`,
                     inline: false
                 });

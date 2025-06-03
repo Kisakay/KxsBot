@@ -5,13 +5,13 @@ import { config } from "../../shared";
 export const new_message: event_type = {
     name: "messageCreate",
     once: false,
-    function(client, x: Message) {
-        if (!x.content.startsWith(config.DEFAULT_BOT_PREFIX)) { return; }
+    async function(client, x: Message) {
+        if (!x.content.startsWith(await client.prefix(x.guild?.id))) { return; }
         if (x.channel.type !== ChannelType.GuildText) return;
 
         if (!x.guild?.members.me?.permissions.has(PermissionFlagsBits.Administrator)) return;
 
-        let args = x.content.slice(config.DEFAULT_BOT_PREFIX.length).trim().split(/ +/g);
+        let args = x.content.slice((await client.prefix(x.guild?.id)).length).trim().split(/ +/g);
         let cmd = client.commands.get(args.shift() || "");
 
         if (!cmd) return;

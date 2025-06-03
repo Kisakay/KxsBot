@@ -6,6 +6,7 @@ import { players } from "./commands/kxs/players";
 import { new_message } from "./events/on_message";
 import { ready } from "./events/on_ready";
 import { counters } from "./commands/kxs/counters";
+import { prefix } from "./commands/bot/prefix";
 
 export function load_all() {
     load_events()
@@ -35,7 +36,8 @@ function load_commands() {
         owner,
         botinfo,
         players,
-        counters
+        counters,
+        prefix
     ])
 
     for (let command of _) {

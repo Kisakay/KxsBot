@@ -24,7 +24,7 @@ export const botinfo: command_type = {
                 `»»——☠——« kxs.rip »——☠——««\n`
                 +
                 `**Owner:** ${client.owners.map(x => `<@${x}>`).join(', ')}\n` +
-                `**Prefix:** ${config.DEFAULT_BOT_PREFIX}\n` +
+                `**Prefix:** ${await client.prefix(message.guild?.id)}\n` +
                 `**Commands:** ${client.commands.size}\n` +
                 `**Servers:** ${client.guilds.cache.size}\n` +
                 `**Users:** ${client.users.cache.size}\n` +
