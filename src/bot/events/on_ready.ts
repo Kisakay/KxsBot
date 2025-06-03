@@ -2,11 +2,14 @@ import type { event_type } from "../../../types/event_type";
 import pkg from "../../../package.json";
 import { ActivityType } from "discord.js";
 import { config } from "../../shared";
+import { kxsNetwork } from "../../kxs";
 
 export const ready: event_type = {
     name: "ready",
     once: true,
     async function(client, x, y, z) {
+        kxsNetwork.connect();
+
         console.log(
             `Kxs Bot v${pkg.version}
  Name: ${client.user?.username}
@@ -20,7 +23,7 @@ export const ready: event_type = {
 
         client.user?.setActivity({
             name: "kxs.rip",
-            state: "The best survev.io client",
+            state: `${kxsNetwork.getOnlineCount()} players online`,
             type: ActivityType.Streaming,
             url: "https://twitch.tv/anaissaraiva"
         });
