@@ -7,7 +7,7 @@ import { kxsNetwork } from "../../../kxs";
 export const players: command_type = {
     name: "players",
     description: "Shows players online",
-    category: "🤖 Bot",
+    category: "🎮 Kxs",
     async function(client, message: Message) {
         const embed = new EmbedBuilder()
             .setColor(colors.primary as ColorResolvable)
