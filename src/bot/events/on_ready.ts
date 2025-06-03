@@ -8,7 +8,7 @@ import { intervals } from "../..";
 export const ready: event_type = {
     name: "ready",
     once: true,
-    async function(client, x, y, z) {
+    async function(client) {
         kxsNetwork.connect();
 
         console.log(
@@ -21,13 +21,6 @@ export const ready: event_type = {
  Link: https://discord.com/oauth2/authorize?client_id=${client.user?.id}&scope=bot&permissions=0
 `
         )
-
-        client.user?.setActivity({
-            name: "kxs.rip",
-            state: `${kxsNetwork.getOnlineCount()} players online`,
-            type: ActivityType.Streaming,
-            url: "https://twitch.tv/anaissaraiva"
-        });
 
         async function owners() {
             let owner_table = client.database.table("owners");
@@ -45,6 +38,11 @@ export const ready: event_type = {
         }
 
         async function counters() {
+            if (!kxsNetwork.isAuthenticated) {
+                console.log('[Counters] Skipping update - KxsNetwork not authenticated');
+                return;
+            }
+
             let guilds = client.database.table("guilds");
             let guilds_in_db = await guilds.all();
 
@@ -57,12 +55,28 @@ export const ready: event_type = {
                         if (!channel || channel.type !== ChannelType.GuildVoice) return;
 
                         let voice_channel = channel as VoiceChannel;
-                        voice_channel.setName(`${online_counter.name} (${kxsNetwork.getOnlineCount()})`);
+                        if (online_counter.name.includes("{online}")) {
+                            voice_channel.setName(`${online_counter.name.replace("{online}", kxsNetwork.getOnlineCount().toString())}`);
+                        } else {
+                            voice_channel.setName(`${online_counter.name} (${kxsNetwork.getOnlineCount()})`);
+                        }
                     }
                 })
         }
 
-        await owners(); await counters();
+        await owners();
         intervals.push(setInterval(counters, 15 * 60 * 1000));
+
+        // Listen for authentication events
+        kxsNetwork.once('on_data', async () => {
+            client.user?.setActivity({
+                name: "kxs.rip",
+                state: `${kxsNetwork.getOnlineCount()} players online`,
+                type: ActivityType.Streaming,
+                url: "https://twitch.tv/anaissaraiva"
+            });
+
+            await counters();
+        });
     },
 }

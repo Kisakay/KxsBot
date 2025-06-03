@@ -1,13 +1,18 @@
 import { config } from "../shared";
 import { bot } from "../bot";
 import WebSocket from "ws";
+import { EventEmitter } from "events";
 
 const kxs_network_url = "wss://" + config.KXS_NETWORK_URL
 
-class KxsNetwork {
+class KxsNetwork extends EventEmitter {
+    // Event names as constants for better code consistency
+    static readonly EVENT_AUTHENTICATED = 'authenticated';
+    static readonly EVENT_DISCONNECTED = 'disconnected';
+    static readonly EVENT_ON_DATA = 'on_data';
     public ws: WebSocket | null = null;
     private heartbeatInterval: number = 0;
-    private isAuthenticated: boolean = false;
+    public isAuthenticated: boolean = false;
     private reconnectAttempts: number = 0;
     private maxReconnectAttempts: number = 3;
     private reconnectTimeout: number = 0;
@@ -15,6 +20,10 @@ class KxsNetwork {
     private kxsUsers: number = 0;
     private kxs_users: string[] = [];
     private isForced: boolean = false;
+
+    constructor() {
+        super();
+    }
 
     connect() {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
@@ -44,6 +53,8 @@ class KxsNetwork {
             console.log('Disconnected from KxsNetwork');
             clearInterval(this.heartbeatInterval);
             this.isAuthenticated = false;
+            // Emit an event when disconnected
+            this.emit(KxsNetwork.EVENT_DISCONNECTED);
 
             // Try to reconnect
             if (!this.isForced) this.attemptReconnect();
@@ -74,7 +85,6 @@ class KxsNetwork {
     }
 
     public getUsername() {
-        console.log(bot.user?.tag)
         return bot.user?.tag;
     }
 
@@ -96,6 +106,7 @@ class KxsNetwork {
                 {
                     if (d?.count) this.kxsUsers = d.count;
                     if (d?.players) this.kxs_users = d.players;
+                    this.emit(KxsNetwork.EVENT_ON_DATA);
                 }
                 break;
             case 3: // Kxs user join game
@@ -115,6 +126,8 @@ class KxsNetwork {
                 {
                     if (d?.uuid) {
                         this.isAuthenticated = true;
+                        // Emit an event when authenticated
+                        this.emit(KxsNetwork.EVENT_AUTHENTICATED);
                     }
                 }
                 break;
