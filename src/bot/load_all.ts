@@ -2,7 +2,7 @@ import { bot } from ".";
 import { botinfo } from "./commands/bot/botinfo";
 import { help } from "./commands/bot/help";
 import { owner } from "./commands/owner/owner";
-
+import { players } from "./commands/kxs/players";
 import { new_message } from "./events/on_message";
 import { ready } from "./events/on_ready";
 
@@ -32,7 +32,8 @@ function load_commands() {
     let _ = Object.values([
         help,
         owner,
-        botinfo
+        botinfo,
+        players
     ])
 
     for (let command of _) {
