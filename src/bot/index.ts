@@ -1,12 +1,21 @@
-import { Client, Collection } from "discord.js";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
 import { Active_Intents } from "./funcs";
 import { load_all } from "./load_all";
 import { config } from "../shared";
+import { db } from "../db";
 
 export const bot = new Client({
     intents: [
-        1048576, 2097152, 8192, 4096, 16384, 8, 16, 64, 2, 1024, 512, 2048, 4, 256, 65536,
-        1, 128, 32, 32768, 16777216, 33554432
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.DirectMessageReactions,
+        GatewayIntentBits.GuildIntegrations,
+        GatewayIntentBits.GuildExpressions,
+        GatewayIntentBits.GuildMessageTyping,
+        GatewayIntentBits.Guilds
     ],
     allowedMentions: {
         repliedUser: false,
@@ -16,6 +25,8 @@ export const bot = new Client({
     }
 })
 
+bot.owners = [];
+bot.database = db;
 bot.commands = new Collection();
 
 load_all()

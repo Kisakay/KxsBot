@@ -1,9 +1,9 @@
-import { SteganoDB } from "stegano.db";
+import { PallasDB } from "pallas-db"
 
-export const db = new SteganoDB({
-    driver: "json",
-    filePath: process.cwd() + "/database.json",
-    currentTable: "bot"
+export const db = new PallasDB({
+    dialect: "sqlite",
+    tables: ["bot", "owners", "guilds", "temp", 'config'],
+    storage: process.cwd() + "/database.sqlite"
 })
 
 console.log(

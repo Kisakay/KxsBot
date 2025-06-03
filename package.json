@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "discord.js": "^14.19.3",
-    "stegano.db": "^4.3.8",
+    "pallas-db": "^1.0.15",
     "ws": "^8.18.2"
   }
 }

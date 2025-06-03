@@ -1,16 +1,16 @@
-import WebSocket from "ws";
-import { config } from "../shared";
+// import WebSocket from "ws";
+// import { config } from "../shared";
 
-export const kxs_network = new WebSocket("wss://" + config.KXS_NETWORK_URL)
+// export const kxs_network = new WebSocket("wss://" + config.KXS_NETWORK_URL)
 
-kxs_network.on("open", () => {
-    kxs_network.on("message", (msg) => {
-        let to_string = msg.toString();
+// kxs_network.on("open", () => {
+//     kxs_network.on("message", (msg) => {
+//         let to_string = msg.toString();
 
-        console.log(to_string);
-    })
-})
+//         console.log(to_string);
+//     })
+// })
 
-kxs_network.on("error", (error) => {
-    console.log(error)
-})
+// kxs_network.on("error", (error) => {
+//     console.log(error)
+// })

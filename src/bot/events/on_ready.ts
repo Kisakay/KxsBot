@@ -1,11 +1,12 @@
 import type { event_type } from "../../../types/event_type";
 import pkg from "../../../package.json";
 import { ActivityType } from "discord.js";
+import { config } from "../../shared";
 
 export const ready: event_type = {
     name: "ready",
     once: true,
-    function(client, x, y, z) {
+    async function(client, x, y, z) {
         console.log(
             `Kxs Bot v${pkg.version}
  Name: ${client.user?.username}
@@ -22,6 +23,23 @@ export const ready: event_type = {
             state: "test",
             type: ActivityType.Streaming,
             url: "https://twitch.tv/anaissaraiva"
-        })
+        });
+
+        async function owners() {
+            let owner_table = client.database.table("owners");
+            let owners_in_db = await owner_table.all() || [];
+
+            let all_owners_in_config = config.OWNERS;
+            let db_owner_ids = owners_in_db.map(x => x.id);
+
+            let concatened_owners = [...new Set([...db_owner_ids, ...all_owners_in_config])];
+
+            client.owners = concatened_owners;
+            for (let owner of concatened_owners) {
+                await owner_table.set(owner, true)
+            }
+        }
+
+        await owners();
     },
 }

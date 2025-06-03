@@ -6,6 +6,7 @@ export const new_message: event_type = {
     name: "messageCreate",
     once: false,
     function(client, x: Message) {
+        console.log(x.content)
         if (!x.content.startsWith(config.DEFAULT_BOT_PREFIX)) { return; }
         if (x.channel.type !== ChannelType.GuildText) return;
 
