@@ -10,6 +10,7 @@ import { prefix } from "./commands/bot/prefix";
 import { servers } from "./commands/kxs/servers";
 import { suggest } from "./commands/kxs/suggest";
 import { when_ping_me } from "./events/when_ping_me";
+import { invite } from "./commands/bot/invite";
 
 export function load_all() {
     load_events()
@@ -43,7 +44,8 @@ function load_commands() {
         counters,
         prefix,
         servers,
-        suggest
+        suggest,
+        invite,
     ])
 
     for (let command of _) {

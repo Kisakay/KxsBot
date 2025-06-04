@@ -136,3 +136,4 @@ database.json
 database.sqlite
 myapp
 package-lock.json
+*.DS_Store
