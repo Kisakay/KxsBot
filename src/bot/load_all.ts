@@ -8,6 +8,7 @@ import { ready } from "./events/on_ready";
 import { counters } from "./commands/kxs/counters";
 import { prefix } from "./commands/bot/prefix";
 import { servers } from "./commands/kxs/servers";
+import { suggest } from "./commands/kxs/suggest";
 import { when_ping_me } from "./events/when_ping_me";
 
 export function load_all() {
@@ -41,7 +42,8 @@ function load_commands() {
         players,
         counters,
         prefix,
-        servers
+        servers,
+        suggest
     ])
 
     for (let command of _) {

@@ -73,83 +73,78 @@ export const help: command_type = {
                 return;
             }
 
-            const parts = interaction.customId!.split('_');
-            const category_index = parseInt(String(parts.length > 2 ? parts[2] : '0'));
-            const category_name = category_names[category_index] || "General";
-            const commands = categories.get(category_name) || [];
-
-            // Create category embed
-            const categoryEmbed = new EmbedBuilder()
-                .setColor(colors.primary as ColorResolvable)
-                .setAuthor({
-                    name: `${client.user?.username || 'Bot'} | Category: ${category_name}`,
-                    iconURL: client.user?.displayAvatarURL?.() || ''
-                })
-                .setThumbnail(client.user?.displayAvatarURL() || null)
-                .setDescription(`Here are the available commands in the **${category_name}** category:`)
-                .setFooter({
-                    text: `Requested by ${message.author.tag} • Page ${category_index + 1}/${category_names.length}`,
-                    iconURL: message.author.displayAvatarURL() || ''
-                })
-                .setTimestamp();
-
-            const prefix = await client.prefix(message.guild?.id);
-            // Add commands to the embed
-            commands.forEach(cmd => {
-                const usage = (cmd as any).usage ? `\n**Usage:** ${prefix}${(cmd as any).usage}` : '';
-                const aliases = (cmd as any).aliases ? `\n**Aliases:** ${(cmd as any).aliases.join(', ')}` : '';
-                const cooldown = (cmd as any).cooldown ? `\n**Cooldown:** ${(cmd as any).cooldown} seconds` : '';
-
-                categoryEmbed.addFields({
-                    name: `\`${prefix}${cmd.name}\``,
-                    value: `${cmd.description}${usage}${aliases}${cooldown}`,
-                    inline: false
+            // Handle home button
+            if (interaction.customId === 'help_home') {
+                // Reset button styles
+                category_names.forEach((_, idx) => {
+                    (row.components[idx] as ButtonBuilder).setStyle(ButtonStyle.Primary);
                 });
-            });
 
-            // Add a button to return to home
-            const backRow = new ActionRowBuilder<ButtonBuilder>()
-                .addComponents(
-                    new ButtonBuilder()
-                        .setCustomId('help_home')
-                        .setLabel("Back to home")
-                        .setStyle(ButtonStyle.Secondary)
-                        .setEmoji('🏠')
-                );
-
-            // Add category buttons
-            category_names.forEach((cat, idx) => {
-                (row.components[idx] as ButtonBuilder).setStyle(
-                    idx === category_index ? ButtonStyle.Success : ButtonStyle.Primary
-                );
-            });
-
-            await interaction.update({
-                embeds: [categoryEmbed],
-                components: [row, backRow]
-            });
-        });
-
-        // Handle back to home button
-        collector.on('collect', async (interaction) => {
-            if (!interaction.isButton() || interaction.customId !== 'help_home') return;
-            if (interaction.user.id !== message.author.id) {
-                await interaction.reply({
-                    content: "You cannot use these buttons as you are not the author of this command.",
-                    ephemeral: true
+                await interaction.update({
+                    embeds: [main_embed],
+                    components: [row]
                 });
                 return;
             }
 
-            // Reset button styles
-            category_names.forEach((_, idx) => {
-                (row.components[idx] as ButtonBuilder).setStyle(ButtonStyle.Primary);
-            });
+            // Handle category buttons
+            const parts = interaction.customId!.split('_');
+            if (parts[0] === 'help' && parts[1] === 'category') {
+                const category_index = parseInt(String(parts.length > 2 ? parts[2] : '0'));
+                const category_name = category_names[category_index] || "General";
+                const commands = categories.get(category_name) || [];
 
-            await interaction.update({
-                embeds: [main_embed],
-                components: [row]
-            });
+                // Create category embed
+                const categoryEmbed = new EmbedBuilder()
+                    .setColor(colors.primary as ColorResolvable)
+                    .setAuthor({
+                        name: `${client.user?.username || 'Bot'} | Category: ${category_name}`,
+                        iconURL: client.user?.displayAvatarURL?.() || ''
+                    })
+                    .setThumbnail(client.user?.displayAvatarURL() || null)
+                    .setDescription(`Here are the available commands in the **${category_name}** category:`)
+                    .setFooter({
+                        text: `Requested by ${message.author.tag} • Page ${category_index + 1}/${category_names.length}`,
+                        iconURL: message.author.displayAvatarURL() || ''
+                    })
+                    .setTimestamp();
+
+                const prefix = await client.prefix(message.guild?.id);
+                // Add commands to the embed
+                commands.forEach(cmd => {
+                    const usage = (cmd as any).usage ? `\n**Usage:** ${prefix}${(cmd as any).usage}` : '';
+                    const aliases = (cmd as any).aliases ? `\n**Aliases:** ${(cmd as any).aliases.join(', ')}` : '';
+                    const cooldown = (cmd as any).cooldown ? `\n**Cooldown:** ${(cmd as any).cooldown} seconds` : '';
+
+                    categoryEmbed.addFields({
+                        name: `\`${prefix}${cmd.name}\``,
+                        value: `${cmd.description}${usage}${aliases}${cooldown}`,
+                        inline: false
+                    });
+                });
+
+                // Add a button to return to home
+                const backRow = new ActionRowBuilder<ButtonBuilder>()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('help_home')
+                            .setLabel("Back to home")
+                            .setStyle(ButtonStyle.Secondary)
+                            .setEmoji('🏠')
+                    );
+
+                // Add category buttons
+                category_names.forEach((cat, idx) => {
+                    (row.components[idx] as ButtonBuilder).setStyle(
+                        idx === category_index ? ButtonStyle.Success : ButtonStyle.Primary
+                    );
+                });
+
+                await interaction.update({
+                    embeds: [categoryEmbed],
+                    components: [row, backRow]
+                });
+            }
         });
 
         // When the collector expires
