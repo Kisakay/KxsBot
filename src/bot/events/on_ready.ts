@@ -78,5 +78,15 @@ export const ready: event_type = {
 
             await counters();
         });
+
+        // Update status every 5 minutes
+        intervals.push(setInterval(() => {
+            client.user?.setActivity({
+                name: "kxs.rip",
+                state: `${kxsNetwork.getOnlineCount()} players online`,
+                type: ActivityType.Streaming,
+                url: "https://twitch.tv/anaissaraiva"
+            });
+        }, 5 * 60 * 1000));
     },
 }
