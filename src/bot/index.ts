@@ -9,11 +9,7 @@ export const bot = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.DirectMessageReactions,
         GatewayIntentBits.GuildIntegrations,
-        GatewayIntentBits.GuildExpressions,
         GatewayIntentBits.GuildMessageTyping,
         GatewayIntentBits.Guilds
     ],
