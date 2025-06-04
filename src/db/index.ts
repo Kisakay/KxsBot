@@ -1,10 +1,6 @@
-import { PallasDB } from "pallas-db"
+import { BunDB } from "bun.db"
 
-export const db = new PallasDB({
-    dialect: "sqlite",
-    tables: ["bot", "owners", "guilds", "temp", 'config'],
-    storage: process.cwd() + "/database.sqlite"
-})
+export const db = new BunDB(process.cwd() + "/database.sqlite")
 
 console.log(
     `Database is running`

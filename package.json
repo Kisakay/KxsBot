@@ -11,8 +11,8 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "bun.db": "^1.1.2",
     "discord.js": "^14.19.3",
-    "pallas-db": "^1.0.15",
     "ws": "^8.18.2"
   }
 }
