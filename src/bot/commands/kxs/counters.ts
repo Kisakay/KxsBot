@@ -35,7 +35,7 @@ export const counters: command_type = {
             return;
         }
 
-        let guild = client.database.table("guilds");
+        let guild = await client.database.table("guilds");
 
         await guild.set(`${message.guild?.id}.online_counter`, {
             channel: voice_channel.id,

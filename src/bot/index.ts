@@ -29,7 +29,7 @@ bot.owners = [];
 bot.database = db;
 bot.commands = new Collection();
 bot.prefix = async (guildId?: string) => {
-    const guild = bot.database.table("guilds");
+    const guild = await bot.database.table("guilds");
     const prefix = await guild.get(`${guildId}.prefix`);
     return prefix || config.DEFAULT_BOT_PREFIX;
 }

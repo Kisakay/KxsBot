@@ -1,7 +1,3 @@
-import { BunDB } from "bun.db"
+import { KxsDB } from "./module";
 
-export const db = new BunDB(process.cwd() + "/database.sqlite")
-
-console.log(
-    `Database is running`
-)
+export const db = new KxsDB();

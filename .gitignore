@@ -134,3 +134,5 @@ bun.lock
 config.json
 database.json
 database.sqlite
+myapp
+package-lock.json

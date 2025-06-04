@@ -23,7 +23,7 @@ export const ready: event_type = {
         )
 
         async function owners() {
-            let owner_table = client.database.table("owners");
+            let owner_table = await client.database.table("owners");
             let owners_in_db = await owner_table.all() || [];
 
             let all_owners_in_config = config.OWNERS;
@@ -43,7 +43,7 @@ export const ready: event_type = {
                 return;
             }
 
-            let guilds = client.database.table("guilds");
+            let guilds = await client.database.table("guilds");
             let guilds_in_db = await guilds.all();
 
             guilds_in_db

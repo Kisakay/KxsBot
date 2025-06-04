@@ -24,7 +24,7 @@ export const prefix: command_type = {
             return;
         }
 
-        const guild = client.database.table("guilds");
+        const guild = await client.database.table("guilds");
 
         await guild.set(`${message.guild?.id}.prefix`, prefix);
 
