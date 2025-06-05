@@ -29,7 +29,7 @@ export const players: command_type = {
 »»——☠——« kxs.rip »——☠——««
 
 > [KxsClient Website](https://kxs.rip)
-> [KxsClient GitHub](https://github.com/AnaisSaraiva/KxsClient)
+> [KxsClient GitHub](https://github.com/Kisakay/KxsClient)
 > [KxsClient Discord](https://discord.gg/kxsclient)
 `
 

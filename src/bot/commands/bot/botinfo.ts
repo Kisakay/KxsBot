@@ -37,7 +37,7 @@ export const botinfo: command_type = {
                 +
                 `> [KxsClient Website](https://kxs.rip)\n`
                 +
-                `> [KxsClient GitHub](https://github.com/AnaisSaraiva/KxsClient)\n`
+                `> [KxsClient GitHub](https://github.com/Kisakay/KxsClient)\n`
                 +
                 `> [KxsClient Discord](https://discord.gg/kxsclient)\n`
                 
