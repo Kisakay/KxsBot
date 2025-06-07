@@ -13,6 +13,7 @@ import { when_ping_me } from "./events/when_ping_me";
 import { invite } from "./commands/bot/invite";
 import { blacklist } from "./commands/owner/blacklist";
 import { unblacklist } from "./commands/owner/unblacklist";
+import { status } from "./commands/owner/status";
 
 export function load_all() {
     load_events()
@@ -49,7 +50,8 @@ function load_commands() {
         suggest,
         invite,
         blacklist,
-        unblacklist
+        unblacklist,
+        status
     ])
 
     for (let command of _) {
