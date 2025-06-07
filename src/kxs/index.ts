@@ -3,7 +3,9 @@ import { bot } from "../bot";
 import WebSocket from "ws";
 import { EventEmitter } from "events";
 
-export const kxs_network_url = "wss://" + config.KXS_NETWORK_URL;
+export const ws_kxs_network_url = "wss://" + config.KXS_NETWORK_URL;
+export const http_kxs_network_url = "https://" + config.KXS_NETWORK_URL;
+
 export const config_json_kxs_client = "https://raw.githubusercontent.com/Kisakay/KxsClient/refs/heads/main/config.json";
 export const package_json_kxs_client = "https://raw.githubusercontent.com/Kisakay/KxsClient/refs/heads/main/package.json";
 
@@ -33,7 +35,7 @@ class KxsNetwork extends EventEmitter {
             return;
         }
 
-        this.ws = new WebSocket(kxs_network_url);
+        this.ws = new WebSocket(ws_kxs_network_url);
 
         this.ws.onopen = () => {
             console.log('[KxsNetwork] WebSocket connection established');
