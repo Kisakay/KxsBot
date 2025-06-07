@@ -17,30 +17,30 @@ export const blacklist: command_type = {
             .setTitle("Blacklist")
             ;
 
-        let ip = args[0];
-        let reason = args.slice(1).join(" ");
-
-        if (!ip) return x.reply("Please specify an ip address");
-        if (!reason) return x.reply("Please specify a reason");
-
         try {
+            let ip = args[0];
+            let reason = args.slice(1).join(" ");
 
-            const req = await fetch(`${http_kxs_network_url}/users-manager/blacklist`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    ip,
-                    reason,
-                    adminKey: config.ADMIN_KEY
-                })
-            });
+            if (ip) {
 
-            const data2 = await req.json() as any;
+                const req = await fetch(`${http_kxs_network_url}/users-manager/blacklist`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        ip,
+                        reason: reason || "No reason provided",
+                        adminKey: config.ADMIN_KEY
+                    })
+                });
 
-            if (!data2) {
-                return x.reply("Failed to blacklist ip (1)");
+
+                const data2 = await req.json() as any;
+
+                if (!data2) {
+                    return x.reply("Failed to blacklist ip (1)");
+                }
             }
 
             const req1 = await fetch(`${http_kxs_network_url}/users-manager/status`, {
