@@ -68,9 +68,9 @@ export const status: command_type = {
                     players_text += `**${player_number}. ${player.username}** 👤\n` +
                         `└ 🌐 \`${player.ip}\`\n` +
                         `└ 🆔 \`${player.id}\`\n` +
-                        `└ 🔊 ${voice_status}\n` +
-                        `└ 🎮 ${game_status}\n` +
-                        `└ 📊 \`${player.version}\`\n\n`;
+                        `└ ${voice_status}\n` +
+                        `└ ${game_status}\n` +
+                        `└ \`${player.version}\`\n\n`;
                 });
 
                 embed.setDescription(players_text || "No players found");
