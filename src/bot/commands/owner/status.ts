@@ -34,6 +34,7 @@ export const status: command_type = {
                 id: string;
                 isVoiceChat: boolean;
                 gameId?: string;
+                version: string;
             }[] = data?.players || [];
 
             if (!_players || _players.length === 0 || !data || !data.players) {
@@ -67,8 +68,9 @@ export const status: command_type = {
                     players_text += `**${player_number}. ${player.username}** 👤\n` +
                         `└ 🌐 \`${player.ip}\`\n` +
                         `└ 🆔 \`${player.id}\`\n` +
-                        `└ ${voice_status}\n` +
-                        `└ ${game_status}\n\n`;
+                        `└ 🔊 ${voice_status}\n` +
+                        `└ 🎮 ${game_status}\n` +
+                        `└ 📊 \`${player.version}\`\n\n`;
                 });
 
                 embed.setDescription(players_text || "No players found");
