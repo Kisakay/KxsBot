@@ -6,7 +6,7 @@ import { kxsNetwork } from "../../../kxs";
 
 export const counters: command_type = {
     name: "counters",
-    description: "Make a voice channel counter with the number of kxs users online",
+    description: "Make a voice channel counter with the number of kxs users online \`{online} variable\`",
     category: "🎮 Kxs",
     async function(client, message: Message, args: string[]) {
         // Check if the user has the required permissions
