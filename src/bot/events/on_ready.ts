@@ -48,17 +48,19 @@ export const ready: event_type = {
 
             guilds_in_db
                 .filter(v => Number(v.id))
-                .map(x => {
+                .map(async x => {
                     let online_counter = x.value?.online_counter as { channel: string, name: string } | undefined;
                     if (online_counter) {
                         let channel = client.channels.cache.get(online_counter.channel);
                         if (!channel || channel.type !== ChannelType.GuildVoice) return;
 
                         let voice_channel = channel as VoiceChannel;
+                        let count = (await kxsNetwork.getOnlineCount()).count.toString();
+
                         if (online_counter.name.includes("{online}")) {
-                            voice_channel.setName(`${online_counter.name.replace("{online}", kxsNetwork.getOnlineCount().toString())}`);
+                            voice_channel.setName(`${online_counter.name.replace("{online}", count)}`);
                         } else {
-                            voice_channel.setName(`${online_counter.name} (${kxsNetwork.getOnlineCount()})`);
+                            voice_channel.setName(`${online_counter.name} (${count})`);
                         }
                     }
                 })
