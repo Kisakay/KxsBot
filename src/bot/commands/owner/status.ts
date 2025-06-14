@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, Message } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
-import { http_kxs_network_url } from "../../../kxs";
+import { kxsNetwork } from "../../../kxs";
 import { config } from "../../../shared";
 
 export const status: command_type = {
@@ -16,26 +16,9 @@ export const status: command_type = {
             // Display a loading message
             const loading_message = await x.reply("📊 Fetching network status...");
 
-            const req1 = await fetch(`${http_kxs_network_url}/users-manager/status`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    adminKey: config.ADMIN_KEY
-                })
-            });
+            const data = await kxsNetwork.getServerStatus(config.ADMIN_KEY)
 
-            const data = await req1.json() as any;
-
-            let _players: {
-                username: string;
-                ip: string;
-                id: string;
-                isVoiceChat: boolean;
-                gameId?: string;
-                version: string;
-            }[] = data?.players || [];
+            let _players = data?.players || [];
 
             if (!_players || _players.length === 0 || !data || !data.players) {
                 return loading_message.edit("❌ Failed to get players data");

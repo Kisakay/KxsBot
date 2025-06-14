@@ -1,6 +1,6 @@
 import { EmbedBuilder, Message } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
-import { http_kxs_network_url } from "../../../kxs";
+import { http_kxs_network_url, kxsNetwork } from "../../../kxs";
 import { config } from "../../../shared";
 
 export const unblacklist: command_type = {
@@ -23,39 +23,16 @@ export const unblacklist: command_type = {
 
         try {
 
-            const req = await fetch(`${http_kxs_network_url}/users-manager/unblacklist`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    ip,
-                    adminKey: config.ADMIN_KEY
-                })
-            });
 
-            const data2 = await req.json() as any;
+            const data2 = await kxsNetwork.unblacklistIp(config.ADMIN_KEY, ip);
 
             if (!data2) {
                 return x.reply("Failed to unblacklist ip (1)");
             }
 
-            const req1 = await fetch(`${http_kxs_network_url}/users-manager/status`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    adminKey: config.ADMIN_KEY
-                })
-            });
+            const data = await kxsNetwork.getServerStatus(config.ADMIN_KEY);
 
-            const data = await req1.json() as any;
-
-            let _blacklisted: {
-                ip: string;
-                reason: string;
-            }[] = data?.blacklisted || [];
+            let _blacklisted = data?.blacklisted || [];
 
             if (!_blacklisted || !data || !data.blacklisted) {
                 return x.reply("Failed to get blacklist (2)");
@@ -63,7 +40,7 @@ export const unblacklist: command_type = {
 
             let blacklisted = "List: \n";
 
-            _blacklisted.forEach((x: any) => {
+            _blacklisted.forEach((x) => {
                 blacklisted += `\`${x.ip}\`\n- ${x.reason}\n`
             });
 

@@ -19,7 +19,7 @@ process.on("SIGINT", async () => {
     kxsNetwork.removeAllListeners();
     
     // Disconnect from kxsNetwork
-    kxsNetwork.disconnect(true);
+    kxsNetwork.disconnect();
     
     // Destroy the bot client
     await bot.destroy();

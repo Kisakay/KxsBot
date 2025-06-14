@@ -24,7 +24,7 @@ export const players: command_type = {
 
 »»——☠——« kxs.rip »——☠——««
 
-**Players:** ${kxsNetwork.getKxsUsers().map(x => `\`${x}\``).join(', ')}
+**Players:** ${kxsNetwork.players.map(x => `\`${x}\``).join(', ')}
 
 »»——☠——« kxs.rip »——☠——««
 

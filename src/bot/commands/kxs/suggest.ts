@@ -33,7 +33,7 @@ export const suggest: command_type = {
         const server_name = args[0];
 
         // Check if the server is a working website
-        const response = await fetch(`https://kxs.rip/api/servers/${server_name}`);
+        const response = await fetch(args[0]);
         const data = await response.text();
         if (!data) {
             message.reply("> *Server not found*")

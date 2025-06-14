@@ -1,6 +1,6 @@
 import { EmbedBuilder, Message } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
-import { http_kxs_network_url } from "../../../kxs";
+import { kxsNetwork } from "../../../kxs";
 import { config } from "../../../shared";
 
 export const blacklist: command_type = {
@@ -22,38 +22,18 @@ export const blacklist: command_type = {
             let reason = args.slice(1).join(" ");
 
             if (ip) {
-
-                const req = await fetch(`${http_kxs_network_url}/users-manager/blacklist`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        ip,
-                        reason: reason || "No reason provided",
-                        adminKey: config.ADMIN_KEY
-                    })
-                });
-
-
-                const data2 = await req.json() as any;
+                const data2 = await kxsNetwork.blacklistIp(config.ADMIN_KEY, ip, reason)
 
                 if (!data2) {
                     return x.reply("Failed to blacklist ip (1)");
                 }
             }
 
-            const req1 = await fetch(`${http_kxs_network_url}/users-manager/status`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    adminKey: config.ADMIN_KEY
-                })
-            });
+            const data = await kxsNetwork.getServerStatus(config.ADMIN_KEY)
 
-            const data = await req1.json() as any;
+            if (!data) {
+                return x.reply("Failed to get blacklist (2)");
+            }
 
             let _blacklisted: {
                 ip: string;

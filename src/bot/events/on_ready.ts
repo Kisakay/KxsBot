@@ -9,7 +9,7 @@ export const ready: event_type = {
     name: "ready",
     once: true,
     async function(client) {
-        kxsNetwork.connect();
+        kxsNetwork.identify(client.user?.tag);
 
         console.log(
             `Kxs Bot v${pkg.version}
@@ -38,8 +38,8 @@ export const ready: event_type = {
         }
 
         async function counters() {
-            if (!kxsNetwork.isAuthenticated) {
-                console.log('[Counters] Skipping update - KxsNetwork not authenticated');
+            if (!kxsNetwork.connected) {
+                console.log('[Counters] Skipping update - KxsNetwork not connected');
                 return;
             }
 
@@ -67,23 +67,20 @@ export const ready: event_type = {
         await owners();
         intervals.push(setInterval(counters, 15 * 60 * 1000));
 
-        // Listen for authentication events
-        kxsNetwork.once('on_data', async () => {
-            client.user?.setActivity({
-                name: "kxs.rip",
-                state: `${kxsNetwork.getOnlineCount()} players online`,
-                type: ActivityType.Streaming,
-                url: "https://twitch.tv/anaissaraiva"
-            });
-
-            await counters();
+        client.user?.setActivity({
+            name: "kxs.rip",
+            state: `${(await kxsNetwork.getOnlineCount()).count} players online`,
+            type: ActivityType.Streaming,
+            url: "https://twitch.tv/anaissaraiva"
         });
 
+        await counters();
+
         // Update status every 5 minutes
-        intervals.push(setInterval(() => {
+        intervals.push(setInterval(async () => {
             client.user?.setActivity({
                 name: "kxs.rip",
-                state: `${kxsNetwork.getOnlineCount()} players online`,
+                state: `${(await kxsNetwork.getOnlineCount()).count} players online`,
                 type: ActivityType.Streaming,
                 url: "https://twitch.tv/anaissaraiva"
             });
