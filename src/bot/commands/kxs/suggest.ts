@@ -38,7 +38,7 @@ export const suggest: command_type = {
         if (!data) {
             message.reply("> *Server not found*")
             return;
-        }   
+        }
 
         if (check_cooldown(message.author.id)) {
             message.reply("> *You have already suggested a server recently*")

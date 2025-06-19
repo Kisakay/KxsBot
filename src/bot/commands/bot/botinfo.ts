@@ -40,7 +40,7 @@ export const botinfo: command_type = {
                 `> [KxsClient GitHub](https://github.com/Kisakay/KxsClient)\n`
                 +
                 `> [KxsClient Discord](https://discord.gg/kxsclient)\n`
-                
+
             )
             .setTimestamp();
 
