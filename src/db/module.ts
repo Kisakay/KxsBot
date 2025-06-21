@@ -1,4 +1,52 @@
-import { get, set, unset } from "lodash";
+// Native implementations of lodash functions
+function get_property(obj: any, path: string, defaultValue: any = null): any {
+    if (!obj) return defaultValue;
+    const keys = path.split('.');
+    let current = obj;
+
+    for (const key of keys) {
+        if (current === null || current === undefined || typeof current !== 'object') {
+            return defaultValue;
+        }
+        current = current[key];
+    }
+
+    return current !== undefined ? current : defaultValue;
+}
+
+function set_property(obj: any, path: string, value: any): any {
+    if (!obj || typeof obj !== 'object') obj = {};
+    const keys = path.split('.');
+    let current = obj;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        if (!current[key] || typeof current[key] !== 'object') {
+            current[key] = {};
+        }
+        current = current[key];
+    }
+
+    current[keys[keys.length - 1]] = value;
+    return obj;
+}
+
+function unset_property(obj: any, path: string): boolean {
+    if (!obj) return false;
+    const keys = path.split('.');
+    let current = obj;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        if (current[key] === undefined) {
+            return false;
+        }
+        current = current[key];
+    }
+
+    return delete current[keys[keys.length - 1]];
+}
+
 import { Database } from 'bun:sqlite';
 
 export enum ErrorKind {
@@ -261,7 +309,7 @@ export class KxsDB<D = any> {
                 this.tableName,
                 keySplit[0]
             );
-            return get(result, keySplit.slice(1).join("."));
+            return get_property(result, keySplit.slice(1).join("."));
         }
 
         const [result] = await this.getRowByKey<T>(this.tableName, key);
@@ -297,7 +345,7 @@ export class KxsDB<D = any> {
                 obj = result as object;
             }
 
-            const valueSet = set<T>(
+            const valueSet = set_property(
                 obj ?? {},
                 keySplit.slice(1).join("."),
                 value
@@ -359,7 +407,7 @@ export class KxsDB<D = any> {
         if (key.includes(".")) {
             const keySplit = key.split(".");
             const obj = (await this.get<any>(keySplit[0])) ?? {};
-            unset(obj, keySplit.slice(1).join("."));
+            unset_property(obj, keySplit.slice(1).join("."));
             return this.set(keySplit[0], obj);
         }
 
