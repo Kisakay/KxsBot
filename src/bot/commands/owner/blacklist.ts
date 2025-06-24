@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, Message } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, Message, time } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
 import { kxsNetwork } from "../../../kxs";
 import { config } from "../../../shared";
@@ -20,23 +20,20 @@ export const blacklist: command_type = {
                 const data2 = await kxsNetwork.blacklistIp(config.ADMIN_KEY, ip, reason)
 
                 if (!data2) {
-                    return x.reply("Failed to blacklist ip (1)");
+                    return x.reply("❌ **Error** - Failed to blacklist IP address. Please verify the IP is valid.");
                 }
             }
 
             const data = await kxsNetwork.getServerStatus(config.ADMIN_KEY)
 
             if (!data) {
-                return x.reply("Failed to get blacklist (2)");
+                return x.reply("❌ **Error** - Failed to retrieve server blacklist.");
             }
 
-            let blacklisted_ips: {
-                ip: string;
-                reason: string;
-            }[] = data?.blacklisted || [];
+            let blacklisted_ips = data?.blacklisted || [];
 
             if (!blacklisted_ips || blacklisted_ips.length === 0 || !data || !data.blacklisted) {
-                return x.reply("Failed to get blacklist (2)");
+                return x.reply("📋 **Information** - No IP addresses are currently blacklisted.");
             }
 
             // Pagination setup
@@ -50,19 +47,31 @@ export const blacklist: command_type = {
                 const end_index = Math.min(start_index + items_per_page, blacklisted_ips.length);
                 const page_items = blacklisted_ips.slice(start_index, end_index);
 
-                let page_content = "";
-                page_items.forEach((item) => {
-                    page_content += `\`${item.ip}\`\n- ${item.reason}\n`;
+                const embed = new EmbedBuilder()
+                    .setColor(0xFF4444) // Red to indicate danger/blacklist
+                    .setTitle("🚫 KxsNetwork Blacklist")
+                    .setDescription("📋 **Blacklisted IP addresses on the network**\n\n" + 
+                        (page_items.length === 0 ? "*No blacklisted IPs found.*" : ""))
+                    .setFooter({
+                        text: `📄 Page ${page_number + 1}/${total_pages} • 🔢 Total: ${blacklisted_ips.length} blacklisted IP(s)`,
+                        iconURL: client.user?.displayAvatarURL()
+                    })
+                    .setTimestamp()
+                    .setThumbnail("https://cdn.discordapp.com/emojis/1234567890123456789.png"); // Optional: security icon
+
+                // Add each IP as a separate field for better readability
+                page_items.forEach((item, index) => {
+                    const fieldIndex = start_index + index + 1;
+                    embed.addFields({
+                        name: `🔒 IP #${fieldIndex}: \`${item.ip}\``,
+                        value: `**📝 Reason:** ${item.reason || "*No reason specified*"}\n` +
+                               `**👤 IGN:** ${item.ign || "*Unknown*"}\n` +
+                               `**⏰ Blacklisted:** ${time(new Date(item.timestamp), 'R')}`,
+                        inline: false
+                    });
                 });
 
-                return new EmbedBuilder()
-                    .setColor("Blue")
-                    .setTitle("Blacklist")
-                    .setDescription(page_content)
-                    .setFooter({
-                        text: `Page ${page_number + 1}/${total_pages} • Total: ${blacklisted_ips.length} blacklisted IPs`
-                    })
-                    .setTimestamp();
+                return embed;
             };
 
             // Create navigation buttons
@@ -72,22 +81,22 @@ export const blacklist: command_type = {
                         new ButtonBuilder()
                             .setCustomId("first_page")
                             .setLabel("⏪ First")
-                            .setStyle(ButtonStyle.Primary)
+                            .setStyle(ButtonStyle.Secondary)
                             .setDisabled(page_number === 0),
                         new ButtonBuilder()
                             .setCustomId("previous_page")
                             .setLabel("◀️ Previous")
-                            .setStyle(ButtonStyle.Primary)
+                            .setStyle(ButtonStyle.Secondary)
                             .setDisabled(page_number === 0),
                         new ButtonBuilder()
                             .setCustomId("next_page")
                             .setLabel("Next ▶️")
-                            .setStyle(ButtonStyle.Primary)
+                            .setStyle(ButtonStyle.Secondary)
                             .setDisabled(page_number === total_pages - 1),
                         new ButtonBuilder()
                             .setCustomId("last_page")
                             .setLabel("Last ⏩")
-                            .setStyle(ButtonStyle.Primary)
+                            .setStyle(ButtonStyle.Secondary)
                             .setDisabled(page_number === total_pages - 1)
                     );
                 return row;
@@ -114,7 +123,7 @@ export const blacklist: command_type = {
                     // Ensure only the command author can use the buttons
                     if (interaction.user.id !== x.author.id) {
                         await interaction.reply({
-                            content: "You cannot use these buttons as you are not the author of this command.",
+                            content: "❌ **Access Denied** - You cannot use these buttons as you are not the author of this command.",
                             ephemeral: true
                         });
                         return;
@@ -156,7 +165,7 @@ export const blacklist: command_type = {
             }
         } catch (err) {
             console.log(err);
-            return x.reply("Failed to blacklist ip (3)");
+            return x.reply("❌ **Critical Error** - An unexpected error occurred while executing the command.");
         }
     },
 }
