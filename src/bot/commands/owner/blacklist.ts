@@ -22,6 +22,8 @@ export const blacklist: command_type = {
                 if (!data2) {
                     return x.reply("❌ **Error** - Failed to blacklist IP address. Please verify the IP is valid.");
                 }
+
+                return x.reply("ip is now blacklisted")
             }
 
             const data = await kxsNetwork.getServerStatus(config.ADMIN_KEY)
