@@ -25,7 +25,7 @@ export const counters: command_type = {
         }
 
         const voice_channel = message.guild?.channels.cache.get(args[0]) || message.mentions.channels.first();
-        const channel_name = args[1];
+        const channel_name = args.slice(1).join(" ");
 
         if (!voice_channel || voice_channel.type !== ChannelType.GuildVoice) {
             message.reply("Please specify a valid voice channel")
