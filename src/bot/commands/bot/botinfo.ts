@@ -31,6 +31,7 @@ export const botinfo: command_type = {
                 `**Memory Usage:** ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} MB\n` +
                 `**Uptime:** ${Math.round(process.uptime())} seconds\n` +
                 `**Version:** ${process.version}\n` +
+                `**Bun Version:** ${Bun.version}\n` +
                 `**Bot Latency:** ${client.ws.ping} ms\n`
                 +
                 `»»——☠——« kxs.rip »——☠——««\n`

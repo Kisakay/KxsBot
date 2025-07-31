@@ -1,8 +1,5 @@
-import { EmbedBuilder, Message, PermissionFlagsBits, ChannelType } from "discord.js";
-import type { ColorResolvable } from "discord.js";
+import { Message, PermissionFlagsBits, ChannelType } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
-import { colors } from "../../../shared";
-import { kxsNetwork } from "../../../kxs";
 
 export const counters: command_type = {
     name: "counters",
