@@ -78,7 +78,7 @@ export const ready: event_type = {
 
         await counters();
 
-        // Update status every 5 minutes
+        // Update status every minute
         intervals.push(setInterval(async () => {
             client.user?.setActivity({
                 name: "kxs.rip",
@@ -86,6 +86,6 @@ export const ready: event_type = {
                 type: ActivityType.Streaming,
                 url: "https://twitch.tv/anaissaraiva"
             });
-        }, 5 * 60 * 1000));
+        }, 60 * 1000));
     },
 }
