@@ -10,7 +10,8 @@ export const counters: command_type = {
             description: "the voice channel",
             name: "voice_channel",
             required: true,
-            type: ApplicationCommandOptionType.Channel
+            type: ApplicationCommandOptionType.Channel,
+            channel_types: [ChannelType.GuildVoice]
         },
         {
             description: "channel name with {Online} variable",

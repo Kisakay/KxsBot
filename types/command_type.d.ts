@@ -1,5 +1,4 @@
-import type { ChatInputCommandInteraction, Client, Interaction, Message,ApplicationCommandOptionType } from "discord.js";
-
+import type { ChatInputCommandInteraction, Client, Interaction, Message,ApplicationCommandOptionType, ChannelType } from "discord.js"
 interface command_type {
     name: string;
     description: string;
@@ -16,4 +15,5 @@ export interface options {
 	name: string,
 	description: string,
 	required: boolean,
+    channel_types?: ChannelType[]
 }
