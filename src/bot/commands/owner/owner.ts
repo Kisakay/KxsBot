@@ -5,9 +5,11 @@ export const owner: command_type = {
     name: "owner",
     description: "Show all bot owner(s)",
     category: "🌟 Owner",
-    async function(client, x: Message) {
-        if (!client.owners.includes(x.author.id)) {
-            return x.react("❌")
+    options: [],
+
+    async function(client, x) {
+        if (!client.owners.includes(x.member.user.id)) {
+            return x.reply("❌")
         };
 
         let embed = new EmbedBuilder()

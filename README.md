@@ -25,7 +25,6 @@ KxsBot is a simple Discord bot built with the Bun runtime environment that conne
 The bot requires the following configuration in the `config.json` file:
 - `DISCORD_TOKEN`: Your Discord bot token
 - `KXS_NETWORK_URL`: The WebSocket URL for the KxsNetwork
-- `DEFAULT_BOT_PREFIX`: The default command prefix for the bot
 
 ## License
 See the LICENSE file for details.

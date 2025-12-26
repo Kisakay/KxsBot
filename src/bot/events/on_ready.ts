@@ -6,7 +6,7 @@ import { kxsNetwork } from "../../kxs";
 import { intervals } from "../..";
 
 export const ready: event_type = {
-    name: "ready",
+    name: "clientReady",
     once: true,
     async function(client) {
         kxsNetwork.identify(client.user?.tag);

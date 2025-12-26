@@ -18,7 +18,7 @@ export const when_ping_me: event_type = {
     once: false,
     async function(client, message) {
         if (message.content === `<@${client.user?.id}>` && !check_cooldown(message.author.id)) {
-            message.reply(`Hey! I'm KxsBot, made by Anais! My prefix is **\`${await client.prefix(message.guild?.id)}\`**\n> Type \`${await client.prefix(message.guild?.id)}help\` to see my commands.`);
+            message.reply(`Hey! I'm KxsBot, made by Anais! My prefix is **\`/\`**\n> Type \`/help\` to see my commands.`);
         }
     },
 }

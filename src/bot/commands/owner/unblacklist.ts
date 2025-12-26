@@ -1,4 +1,4 @@
-import { EmbedBuilder, Message } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, EmbedBuilder, Message, messageLink } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
 import { kxsNetwork } from "../../../kxs";
 import { config } from "../../../shared";
@@ -7,9 +7,17 @@ export const unblacklist: command_type = {
     name: "unblacklist",
     description: "Unblacklist a ip address in the KxsNetwork",
     category: "🌟 Owner",
-    async function(client, x: Message, args) {
-        if (!client.owners.includes(x.author.id)) {
-            return x.react("❌")
+    options: [
+        {
+            description: "the ip you want to unblacklist",
+            name: "ip",
+            required: true,
+            type: ApplicationCommandOptionType.String
+        }
+    ],
+    async function(client, x) {
+        if (!client.owners.includes(x.user.id)) {
+            return x.reply("❌")
         };
 
         let embed = new EmbedBuilder()
@@ -17,7 +25,7 @@ export const unblacklist: command_type = {
             .setTitle("Blacklist")
             ;
 
-        let ip = args[0];
+        let ip = x.options.getString("ip", true);
 
         if (!ip) return x.reply("Please specify an ip address");
 

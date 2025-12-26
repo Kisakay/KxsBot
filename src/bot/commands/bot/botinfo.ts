@@ -1,4 +1,4 @@
-import { EmbedBuilder, Message } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import type { ColorResolvable } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
 import { colors, config } from "../../../shared";
@@ -7,7 +7,9 @@ export const botinfo: command_type = {
     name: "botinfo",
     description: "Shows bot information",
     category: "🤖 Bot",
-    async function(client, message: Message) {
+    options: [],
+
+    async function(client, message) {
         const embed = new EmbedBuilder()
             .setColor(colors.primary as ColorResolvable)
             .setAuthor({
@@ -16,15 +18,14 @@ export const botinfo: command_type = {
             })
             .setThumbnail(client.user?.displayAvatarURL() || null)
             .setFooter({
-                text: `Requested by ${message.author.tag}`,
-                iconURL: message.author.displayAvatarURL() || ''
+                text: `Requested by ${message.user.tag}`,
+                iconURL: message.user.displayAvatarURL() || ''
             })
             .setDescription(`**Bot Information**\n\n`
                 +
                 `»»——☠——« kxs.rip »——☠——««\n`
                 +
                 `**Owner:** ${client.owners.map(x => `<@${x}>`).join(', ')}\n` +
-                `**Prefix:** ${await client.prefix(message.guild?.id)}\n` +
                 `**Commands:** ${client.commands.size}\n` +
                 `**Servers:** ${client.guilds.cache.size}\n` +
                 `**Users:** ${client.users.cache.size}\n` +

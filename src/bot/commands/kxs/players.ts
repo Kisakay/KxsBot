@@ -8,7 +8,9 @@ export const players: command_type = {
     name: "players",
     description: "Shows players online",
     category: "🎮 Kxs",
-    async function(client, message: Message) {
+    options: [],
+
+    async function(client, message) {
         const embed = new EmbedBuilder()
             .setColor(colors.primary as ColorResolvable)
             .setAuthor({
@@ -17,8 +19,8 @@ export const players: command_type = {
             })
             .setThumbnail(client.user?.displayAvatarURL() || null)
             .setFooter({
-                text: `Requested by ${message.author.tag}`,
-                iconURL: message.author.displayAvatarURL() || ''
+                text: `Requested by ${message.user.tag}`,
+                iconURL: message.user.displayAvatarURL() || ''
             })
             .setDescription(`**Players Online**
 

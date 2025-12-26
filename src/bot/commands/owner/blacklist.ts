@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, Message, time } from "discord.js";
+import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, Message, time } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
 import { kxsNetwork } from "../../../kxs";
 import { config } from "../../../shared";
@@ -7,14 +7,28 @@ export const blacklist: command_type = {
     name: "blacklist",
     description: "Blacklist a ip address in the KxsNetwork",
     category: "🌟 Owner",
-    async function(client, x: Message, args) {
-        if (!client.owners.includes(x.author.id)) {
-            return x.react("❌")
+    options: [
+        {
+            description: "the ip you want to blacklist",
+            name: "ip",
+            required: true,
+            type: ApplicationCommandOptionType.String
+        },
+        {
+            description: "the reason for the blacklist",
+            name: "reason",
+            required: true,
+            type: ApplicationCommandOptionType.String
+        }
+    ],
+    async function(client, x) {
+        if (!client.owners.includes(x.member.user.id)) {
+            return x.reply("❌")
         };
 
         try {
-            let ip = args[0];
-            let reason = args.slice(1).join(" ");
+            let ip = x.options.getString("ip", true);
+            let reason = x.options.getString("reason", true);
 
             if (ip) {
                 const data2 = await kxsNetwork.blacklistIp(config.ADMIN_KEY, ip, reason)
@@ -52,7 +66,7 @@ export const blacklist: command_type = {
                 const embed = new EmbedBuilder()
                     .setColor(0xFF4444) // Red to indicate danger/blacklist
                     .setTitle("🚫 KxsNetwork Blacklist")
-                    .setDescription("📋 **Blacklisted IP addresses on the network**\n\n" + 
+                    .setDescription("📋 **Blacklisted IP addresses on the network**\n\n" +
                         (page_items.length === 0 ? "*No blacklisted IPs found.*" : ""))
                     .setFooter({
                         text: `📄 Page ${page_number + 1}/${total_pages} • 🔢 Total: ${blacklisted_ips.length} blacklisted IP(s)`,
@@ -67,8 +81,8 @@ export const blacklist: command_type = {
                     embed.addFields({
                         name: `🔒 IP #${fieldIndex}: \`${item.ip}\``,
                         value: `**📝 Reason:** ${item.reason || "*No reason specified*"}\n` +
-                               `**👤 IGN:** ${item.ign || "*Unknown*"}\n` +
-                               `**⏰ Blacklisted:** ${time(new Date(item.timestamp), 'R')}`,
+                            `**👤 IGN:** ${item.ign || "*Unknown*"}\n` +
+                            `**⏰ Blacklisted:** ${time(new Date(item.timestamp), 'R')}`,
                         inline: false
                     });
                 });
@@ -123,7 +137,7 @@ export const blacklist: command_type = {
 
                 collector.on("collect", async (interaction) => {
                     // Ensure only the command author can use the buttons
-                    if (interaction.user.id !== x.author.id) {
+                    if (interaction.user.id !== x.user.id) {
                         await interaction.reply({
                             content: "❌ **Access Denied** - You cannot use these buttons as you are not the author of this command.",
                             ephemeral: true

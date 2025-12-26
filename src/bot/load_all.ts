@@ -3,10 +3,9 @@ import { botinfo } from "./commands/bot/botinfo";
 import { help } from "./commands/bot/help";
 import { owner } from "./commands/owner/owner";
 import { players } from "./commands/kxs/players";
-import { new_message } from "./events/on_message";
+import { new_message } from "./events/on_interaction";
 import { ready } from "./events/on_ready";
 import { counters } from "./commands/kxs/counters";
-import { prefix } from "./commands/bot/prefix";
 import { servers } from "./commands/kxs/servers";
 import { suggest } from "./commands/kxs/suggest";
 import { when_ping_me } from "./events/when_ping_me";
@@ -14,6 +13,11 @@ import { invite } from "./commands/bot/invite";
 import { blacklist } from "./commands/owner/blacklist";
 import { unblacklist } from "./commands/owner/unblacklist";
 import { status } from "./commands/owner/status";
+import { ApplicationCommand, REST, Routes } from "discord.js";
+import { config } from "../shared";
+import { getUserIdFromToken } from "./funcs";
+
+const rest = new REST();
 
 export function load_all() {
     load_events()
@@ -38,14 +42,13 @@ function load_events() {
     }
 }
 
-function load_commands() {
+async function load_commands() {
     let _ = Object.values([
         help,
         owner,
         botinfo,
         players,
         counters,
-        prefix,
         servers,
         suggest,
         invite,
@@ -58,4 +61,18 @@ function load_commands() {
         bot.commands.set(command.name, command)
         console.log("[Command] " + command.name);
     }
+
+    rest.setToken(config.DISCORD_TOKEN);
+
+    const data = await rest.put(Routes.applicationCommands(getUserIdFromToken(config.DISCORD_TOKEN)), {
+        body: _.map(x => {
+            return {
+                name: x.name,
+                description: x.description,
+                options: x.options || []
+            }
+        })
+    });
+
+    console.log(`Currently, ${(data as unknown as ApplicationCommand[]).length} applications are now synchronized.`);
 }

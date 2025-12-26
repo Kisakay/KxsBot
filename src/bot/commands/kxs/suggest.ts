@@ -1,4 +1,4 @@
-import { PermissionFlagsBits, Message } from "discord.js";
+import { PermissionFlagsBits, Message, ApplicationCommandOptionType } from "discord.js";
 import type { command_type } from "../../../../types/command_type";
 import { timeouts } from "../../..";
 
@@ -18,36 +18,44 @@ export const suggest: command_type = {
     name: "suggest",
     description: "Suggest a server to be added to the list",
     category: "🎮 Kxs",
-    async function(client, message: Message, args: string[]) {
+    options: [
+        {
+            name: "suggestion",
+            description: "the suggestion you want to send",
+            required: true,
+            type: ApplicationCommandOptionType.String
+        }
+    ],
+    async function(client, message) {
         // check if the user has the required permissions
-        if (!message.member?.permissions.has(PermissionFlagsBits.ManageGuild)) {
-            message.react("❌")
+        if (!message.memberPermissions.has(PermissionFlagsBits.ManageGuild)) {
+            message.reply("❌")
             return;
         }
 
-        if (!args[0]) {
-            message.reply("> *Please specify a server name*")
-            return;
-        }
+        // if (!args[0]) {
+        //     message.reply("> *Please specify a server name*")
+        //     return;
+        // }
 
-        const server_name = args[0];
+        const server_name = message.options.getString('suggestion', true);
 
         // Check if the server is a working website
-        const response = await fetch(args[0]);
+        const response = await fetch(server_name);
         const data = await response.text();
         if (!data) {
             message.reply("> *Server not found*")
             return;
         }
 
-        if (check_cooldown(message.author.id)) {
+        if (check_cooldown(message.member.user.id)) {
             message.reply("> *You have already suggested a server recently*")
             return;
         }
 
         client.users.fetch(client.owners[0]).then(owner => {
             owner.send(`> *New server suggestion: ${server_name}*
-> *Suggested by: ${message.author.tag} (${message.author.id})*`)
+> *Suggested by: ${message.user.tag} (${message.user.id})*`)
         })
 
         message.reply("> *Server suggested successfully*")

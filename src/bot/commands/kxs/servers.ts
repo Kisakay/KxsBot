@@ -8,7 +8,8 @@ export const servers: command_type = {
     name: "servers",
     description: "Shows available servers to play with KxsClient",
     category: "🎮 Kxs",
-    async function(client, message: Message) {
+    options: [],
+    async function(client, message) {
         // Load config.json about the url
         const config_from_json = await fetch(config_json_kxs_client, {
             method: 'GET',
@@ -26,8 +27,8 @@ export const servers: command_type = {
             })
             .setThumbnail(client.user?.displayAvatarURL() || null)
             .setFooter({
-                text: `Requested by ${message.author.tag}`,
-                iconURL: message.author.displayAvatarURL() || ''
+                text: `Requested by ${message.user.tag}`,
+                iconURL: message.user.displayAvatarURL() || ''
             })
             .setDescription(`**Available servers**
 

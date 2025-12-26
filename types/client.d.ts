@@ -7,6 +7,5 @@ declare module 'discord.js' {
         commands: Collection<string, command_type>
         owners: string[]
         database: KxsDB;
-        async prefix(guildId?: string): Promise<string>
     }
 }

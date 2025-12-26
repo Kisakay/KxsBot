@@ -7,7 +7,9 @@ export const help: command_type = {
     name: "help",
     description: "Shows all available commands",
     category: "🤖 Bot",
-    async function(client, message: Message) {
+    options: [],
+
+    async function(client, message) {
         // Get command categories
         const categories = new Map<string, command_type[]>();
 
@@ -32,8 +34,8 @@ export const help: command_type = {
             .setThumbnail(client.user?.displayAvatarURL() || null)
             .setDescription(`**Welcome to ${client.user?.username}'s help menu!**\n\nThis bot has ${client.commands.size} commands across ${categories.size} categories.\n\nUse the buttons below to navigate between different command categories.`)
             .setFooter({
-                text: `Requested by ${message.author.tag}`,
-                iconURL: message.author.displayAvatarURL() || ''
+                text: `Requested by ${message.user.tag}`,
+                iconURL: message.user.displayAvatarURL() || ''
             })
             .setTimestamp();
 
@@ -65,7 +67,7 @@ export const help: command_type = {
 
         collector.on('collect', async (interaction) => {
             if (!interaction.isButton()) return;
-            if (interaction.user.id !== message.author.id) {
+            if (interaction.user.id !== message.user.id) {
                 await interaction.reply({
                     content: "You cannot use these buttons as you are not the author of this command.",
                     ephemeral: true
@@ -104,20 +106,19 @@ export const help: command_type = {
                     .setThumbnail(client.user?.displayAvatarURL() || null)
                     .setDescription(`Here are the available commands in the **${category_name}** category:`)
                     .setFooter({
-                        text: `Requested by ${message.author.tag} • Page ${category_index + 1}/${category_names.length}`,
-                        iconURL: message.author.displayAvatarURL() || ''
+                        text: `Requested by ${message.user.tag} • Page ${category_index + 1}/${category_names.length}`,
+                        iconURL: message.user.displayAvatarURL() || ''
                     })
                     .setTimestamp();
 
-                const prefix = await client.prefix(message.guild?.id);
                 // Add commands to the embed
                 commands.forEach(cmd => {
-                    const usage = (cmd as any).usage ? `\n**Usage:** ${prefix}${(cmd as any).usage}` : '';
+                    const usage = (cmd as any).usage ? `\n**Usage:** /${(cmd as any).usage}` : '';
                     const aliases = (cmd as any).aliases ? `\n**Aliases:** ${(cmd as any).aliases.join(', ')}` : '';
                     const cooldown = (cmd as any).cooldown ? `\n**Cooldown:** ${(cmd as any).cooldown} seconds` : '';
 
                     categoryEmbed.addFields({
-                        name: `\`${prefix}${cmd.name}\``,
+                        name: `\`/${cmd.name}\``,
                         value: `${cmd.description}${usage}${aliases}${cooldown}`,
                         inline: false
                     });

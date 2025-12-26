@@ -7,9 +7,10 @@ export const status: command_type = {
     name: "status",
     description: "Get the status of the KxsNetwork",
     category: "🌟 Owner",
-    async function(client, x: Message, args) {
-        if (!client.owners.includes(x.author.id)) {
-            return x.react("❌")
+    options: [],
+    async function(client, x) {
+        if (!client.owners.includes(x.user.id)) {
+            return x.reply("❌")
         };
 
         try {
@@ -109,7 +110,7 @@ export const status: command_type = {
 
             collector.on("collect", async (interaction) => {
                 // Only allow the command author to use the buttons
-                if (interaction.user.id !== x.author.id) {
+                if (interaction.user.id !== x.user.id) {
                     return interaction.reply({
                         content: "❌ These buttons are not for you!",
                         ephemeral: true
