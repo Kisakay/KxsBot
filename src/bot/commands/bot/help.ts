@@ -62,7 +62,7 @@ export const help: command_type = {
 
         // Create collector for button interactions
         const collector = help_message.createMessageComponentCollector({
-            time: 60000 // Collector expires after 60 seconds
+            time: 120_000 // Collector expires after 60 seconds
         });
 
         collector.on('collect', async (interaction) => {
