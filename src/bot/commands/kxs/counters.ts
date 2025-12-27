@@ -23,7 +23,7 @@ export const counters: command_type = {
     async function(client, message) {
         // Check if the user has the required permissions
         if (!message.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
-            message.reply("❌")
+            message.reply("> *You don't have ManageChannels server permission*")
             return;
         }
 
@@ -43,7 +43,7 @@ export const counters: command_type = {
         const channel_name = message.options.getString("channel_name", true);
 
         if (!voice_channel || voice_channel.type !== ChannelType.GuildVoice) {
-            message.reply("Please specify a valid voice channel")
+            message.reply("> *Please specify a valid voice channel*")
             return;
         }
 

@@ -69,7 +69,7 @@ export const help: command_type = {
             if (!interaction.isButton()) return;
             if (interaction.user.id !== message.user.id) {
                 await interaction.reply({
-                    content: "You cannot use these buttons as you are not the author of this command.",
+                    content: "> *You cannot use these buttons as you are not the author of this command.*",
                     ephemeral: true
                 });
                 return;

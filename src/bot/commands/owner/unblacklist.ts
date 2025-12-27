@@ -17,7 +17,7 @@ export const unblacklist: command_type = {
     ],
     async function(client, x) {
         if (!client.owners.includes(x.user.id)) {
-            return x.reply("❌")
+            return x.reply("> *You are not owner of the bot*")
         };
 
         let embed = new EmbedBuilder()
@@ -27,14 +27,14 @@ export const unblacklist: command_type = {
 
         let ip = x.options.getString("ip", true);
 
-        if (!ip) return x.reply("Please specify an ip address");
+        if (!ip) return x.reply("> *Please specify an ip address*");
 
         try {
             if (ip) {
                 const data2 = await kxsNetwork.unblacklistIp(config.ADMIN_KEY, ip);
 
                 if (!data2) {
-                    return x.reply("Failed to unblacklist ip (1)");
+                    return x.reply("> *Failed to unblacklist ip (1)*");
                 }
             }
 
@@ -43,16 +43,14 @@ export const unblacklist: command_type = {
             let blacklisted_ips = data?.blacklisted || [];
 
             if (!blacklisted_ips || !data || !data.blacklisted) {
-                return x.reply("Failed to get blacklist (2)");
+                return x.reply("> *Failed to get blacklist (2)*");
             }
 
-            await x.reply({
-                content: "ip is now unblacklisted"
-            });
+            await x.reply("> *ip is now unblacklisted*");
 
         } catch (err) {
             console.log(err);
-            return x.reply("Failed to unblacklist ip (3)");
+            return x.reply("> *Failed to unblacklist ip (3)*");
         }
     },
 }

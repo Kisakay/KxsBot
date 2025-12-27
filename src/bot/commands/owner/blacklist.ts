@@ -23,7 +23,7 @@ export const blacklist: command_type = {
     ],
     async function(client, x) {
         if (!client.owners.includes(x.member.user.id)) {
-            return x.reply("❌")
+            return x.reply("> *You are not owner of the bot*")
         };
 
         try {
@@ -34,22 +34,22 @@ export const blacklist: command_type = {
                 const data2 = await kxsNetwork.blacklistIp(config.ADMIN_KEY, ip, reason)
 
                 if (!data2) {
-                    return x.reply("❌ **Error** - Failed to blacklist IP address. Please verify the IP is valid.");
+                    return x.reply("> **Error** - Failed to blacklist IP address. Please verify the IP is valid.");
                 }
 
-                return x.reply("ip is now blacklisted")
+                return x.reply("> *ip is now blacklisted*")
             }
 
             const data = await kxsNetwork.getServerStatus(config.ADMIN_KEY)
 
             if (!data) {
-                return x.reply("❌ **Error** - Failed to retrieve server blacklist.");
+                return x.reply("> **Error** - Failed to retrieve server blacklist.");
             }
 
             let blacklisted_ips = data?.blacklisted || [];
 
             if (!blacklisted_ips || blacklisted_ips.length === 0 || !data || !data.blacklisted) {
-                return x.reply("📋 **Information** - No IP addresses are currently blacklisted.");
+                return x.reply("> **Information** - No IP addresses are currently blacklisted.");
             }
 
             // Pagination setup
@@ -139,7 +139,7 @@ export const blacklist: command_type = {
                     // Ensure only the command author can use the buttons
                     if (interaction.user.id !== x.user.id) {
                         await interaction.reply({
-                            content: "❌ **Access Denied** - You cannot use these buttons as you are not the author of this command.",
+                            content: "> **Access Denied** - You cannot use these buttons as you are not the author of this command.",
                             ephemeral: true
                         });
                         return;
@@ -181,7 +181,7 @@ export const blacklist: command_type = {
             }
         } catch (err) {
             console.log(err);
-            return x.reply("❌ **Critical Error** - An unexpected error occurred while executing the command.");
+            return x.reply("> **Critical Error** - An unexpected error occurred while executing the command.");
         }
     },
 }

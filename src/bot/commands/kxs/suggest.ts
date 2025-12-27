@@ -29,7 +29,7 @@ export const suggest: command_type = {
     async function(client, message) {
         // check if the user has the required permissions
         if (!message.memberPermissions.has(PermissionFlagsBits.ManageGuild)) {
-            message.reply("❌")
+            message.reply("> *You don't have ManageGuild server permission*")
             return;
         }
 
@@ -39,6 +39,11 @@ export const suggest: command_type = {
         // }
 
         const server_name = message.options.getString('suggestion', true);
+
+        if (!server_name.startsWith("http")) {
+            message.reply("> *The URL is invalid*")
+            return;
+        }
 
         // Check if the server is a working website
         const response = await fetch(server_name);

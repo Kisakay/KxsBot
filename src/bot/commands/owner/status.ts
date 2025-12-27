@@ -10,7 +10,7 @@ export const status: command_type = {
     options: [],
     async function(client, x) {
         if (!client.owners.includes(x.user.id)) {
-            return x.reply("❌")
+            return x.reply("> *You are not owner of the bot*")
         };
 
         try {
@@ -112,7 +112,7 @@ export const status: command_type = {
                 // Only allow the command author to use the buttons
                 if (interaction.user.id !== x.user.id) {
                     return interaction.reply({
-                        content: "❌ These buttons are not for you!",
+                        content: "> *These buttons are not for you!*",
                         ephemeral: true
                     });
                 }
@@ -159,7 +159,7 @@ export const status: command_type = {
 
         } catch (err) {
             console.log(err);
-            return x.reply("❌ Failed to get status (3)");
+            return x.reply("> *Failed to get status (3)*");
         }
     },
 }

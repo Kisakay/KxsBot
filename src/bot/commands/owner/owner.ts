@@ -9,7 +9,7 @@ export const owner: command_type = {
 
     async function(client, x) {
         if (!client.owners.includes(x.member.user.id)) {
-            return x.reply("❌")
+            return x.reply("> *You are not owner of the bot*")
         };
 
         let embed = new EmbedBuilder()
