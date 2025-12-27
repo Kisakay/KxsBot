@@ -14,7 +14,7 @@ export const counters: command_type = {
             channel_types: [ChannelType.GuildVoice]
         },
         {
-            description: "channel name with {Online} variable",
+            description: "channel name with {online} variable",
             name: "channel_name",
             required: true,
             type: ApplicationCommandOptionType.String
